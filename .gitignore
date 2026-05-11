@@ -1,0 +1,76 @@
+# Build artifacts
+*.o
+*.so
+*.a
+*.d
+
+# Test binaries
+test_*
+!tests/test_*.c
+
+# Debug symbols
+*_dbg.o
+*_dbg.so
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Editor/IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+/tmp/
+lasx-*.log
+
+# Backup files
+*.bak
+*.backup
+.backup
+
+# Random test binaries and core dumps
+random_test/test/
+*.core
+
+# Performance data
+perf.data
+perf.data.old
+
+# Ruff cache
+.ruff_cache/
+
+# Build artifacts in src directories
+src/emu/*.o
+src/emu/*.d
+src/interpret/*.o
+src/interpret/*.d
+src/*.o
+src/*.d
+scan_loops
+1.s
+3.s
+test_xvmap_loop.o
+scan_loops
+.gitignore
+jit_compare
+
+tests/usedef/gen/
+tests/usedef/result/
+
+# Coverage data
+coverage/
+*.gcno
+*.gcda
+*.gcov
+*.gcov.json.gz
+
+# graphify generated files (build artifacts with absolute paths)
+graphify-out/
+src/graphify-out/
+debian/pkg/
+*.deb

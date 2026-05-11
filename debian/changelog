@@ -1,0 +1,8 @@
+liblasx2lsx (1.0.0-1) unstable; urgency=medium
+
+  * Initial release.
+  * Pure C emulation for all ~700 LASX instructions.
+  * JIT translation to LSX (128-bit) with use-def optimization.
+  * Loop detection and xvmap-based loop JIT.
+
+ -- liblasx2lsx contributors  <noreply@example.com>  Mon, 11 May 2026 00:00:00 +0800

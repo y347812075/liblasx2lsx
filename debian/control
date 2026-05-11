@@ -1,0 +1,21 @@
+Source: liblasx2lsx
+Section: libs
+Priority: optional
+Maintainer: liblasx2lsx contributors
+Build-Depends: gcc (>= 8.3), binutils
+
+Package: liblasx2lsx
+Architecture: loongarch64
+Depends: libc6 (>= 2.28)
+Description: LASX instruction emulation library
+ LASX (LoongArch SIMD Extension, 256-bit vector instruction)
+ software emulation library via SIGILL trap + LD_PRELOAD.
+ Runs LASX programs on platforms lacking 256-bit vector
+ support (2K3000, 3B6000M, etc.).
+ .
+ Features:
+  - Pure C emulation for all ~700 LASX instructions
+  - JIT translation to LSX (128-bit) with use-def optimization
+  - Loop detection and xvmap-based loop JIT
+  - Multi-thread safe via pthread TLS
+  - MIT licensed

@@ -1,0 +1,14 @@
+BasedOnStyle: LLVM
+IndentWidth: 4
+ColumnLimit: 200
+PointerAlignment: Left
+SpaceAfterCStyleCast: false
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+BreakBeforeBraces: Linux
+IndentCaseLabels: false
+SpacesInParentheses: false
+SpacesInAngles: false
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: true
+CompactNamespaces: false
