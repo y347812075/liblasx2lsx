@@ -31,6 +31,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "lasx_interpret.h"
+#include <larchintrin.h>
 
 int use_lsx_intrinsics;
 #ifdef LASX_PROFILE
@@ -120,6 +121,10 @@ __attribute__((constructor)) void register_sigill_handler(void) {
   const char* env = getenv("DISABLE_LSX_INTRINSICS");
   if (env && atoi(env) != 0) {
       use_lsx_intrinsics = 0;
+  }
+  const bool has_lsx = __cpucfg(2) & 0b01000000;
+  if (!has_lsx) {
+    use_lsx_intrinsics = 0;
   }
   // 初始化性能统计
   perf_stats_init();
