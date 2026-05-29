@@ -130,7 +130,7 @@ extern int lasx_interpret_mode;
 
 bool lasx_emu_create_interpret_block(ucontext_t *uc)
 {
-    if (interpreter == NULL) return false;
+    if (interpreter == NULL || !lasx_interpret_mode) return false;
 
     interpret_lock();
 
