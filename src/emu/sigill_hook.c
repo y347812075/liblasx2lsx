@@ -51,12 +51,17 @@ void sigill_handler(int sig, siginfo_t *info, void *context) {
 
   // 获取当前触发异常的指令地址
 #if defined(__loongarch__)
+  unsigned long pc_val = ucontext->uc_mcontext.__pc;
+  unsigned int instr = *(unsigned int *)pc_val;
+  
+  if ((instr & 0x48000300) == 0x48000300) {
+      //重新执行jiscr1
+      return;
+  }
+
   if (lasx_emu_create_interpret_fragment(ucontext)) { return; }
 
   if (lasx_emu_create_interpret_block(ucontext)) { return; }
-
-  unsigned long pc_val = ucontext->uc_mcontext.__pc;
-  unsigned int instr = *(unsigned int *)pc_val;
 
   if(lasx_emu_create_interpret(ucontext, instr)) {
       return;
