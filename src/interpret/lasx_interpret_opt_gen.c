@@ -1286,10 +1286,16 @@ void __gen_lasx_interpret_xvst_opt(void *as, unsigned int instr)
     off = (off << 20) >> 20;
     tdlog("                 : interpret(optgen) xvst %08x \n", instr);
 
+    int excl_vr[] = { xd };
+    int vt0;
+    gen_reg_find_free_vrs(&vt0, 1, excl_vr, 1);
+
+    gen_reg_save_vr(as, vt0);
+
     if (off >= -2048 && off <= 2047 - 16) {
         la_vst(as, xd, rj, off);
-        la_vld(as, xd, LA_TP, TD_OFF_DATA(xd, 2));
-        la_vst(as, xd, rj, off + 16);
+        la_vld(as, vt0, LA_TP, TD_OFF_DATA(xd, 2));
+        la_vst(as, vt0, rj, off + 16);
     } else {
         int excl_gr[] = { rj };
         int t0;
@@ -1298,10 +1304,11 @@ void __gen_lasx_interpret_xvst_opt(void *as, unsigned int instr)
         la_load_immediate32(as, t0, off);
         la_add_d(as, t0, rj, t0);
         la_vst(as, xd, t0, 0);
-        la_vld(as, xd, LA_TP, TD_OFF_DATA(xd, 2));
-        la_vst(as, xd, t0, 16);
+        la_vld(as, vt0, LA_TP, TD_OFF_DATA(xd, 2));
+        la_vst(as, vt0, t0, 16);
         gen_reg_restore_gr(as, t0);
     }
+    gen_reg_restore_vr(as, vt0);
 }
 
 void __gen_lasx_interpret_xvstelm_b_opt(void *as, unsigned int instr)
@@ -2150,10 +2157,13 @@ void __gen_lasx_interpret_xvrepl128vei_d_opt(void *as, unsigned int instr)
     gen_reg_restore_vr(as, vt[0]);
 }
 
+extern uint64_t tp_offset;
+
 int lasx_interpret_inst_gen(void *as, unsigned int instr, int with_prologue)
 {
     if (with_prologue) {
         la_pcaddi(as, LA_ZERO, 0);
+        la_addi_d(as, LA_TP, LA_TP, tp_offset);
     }
     int ok = 0;
     switch (instr >> 22) {
@@ -2892,6 +2902,7 @@ int lasx_interpret_inst_gen(void *as, unsigned int instr, int with_prologue)
     default: break;
     }
     if (with_prologue) {
+        la_addi_d(as, LA_TP, LA_TP, -tp_offset);
         la_jiscr0(as, 4);
     }
     return ok;
